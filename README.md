@@ -24,7 +24,7 @@ An Emacs configuration for the casual editor user.
 - `M-S <down>` and `M-S-<up>`: multiple cursors like Visual Studio/VS Code
 
 ## Setup
-With a working Emacs installation, all you need to do to use this configuration is to download the [.emacs]https://github.com/bogdanmaciuca/Emacs-sane-configuration/blob/main/.emacs file in the Emacs home directory and download the [redo+.el]https://www.emacswiki.org/emacs/download/redo%2b.el file into the scripts folder (Emacs/emacs-29.1/share/emacs/site-lisp) for Emacs 29.1.
+With a working Emacs installation, all you need to do to use this configuration is to download the [.emacs](https://github.com/bogdanmaciuca/Emacs-sane-configuration/blob/main/.emacs) file in the Emacs home directory and download the [redo+.el](https://www.emacswiki.org/emacs/download/redo%2b.el) file into the scripts folder (Emacs/emacs-29.1/share/emacs/site-lisp) for Emacs 29.1.
 
 ## Contributing
 Feedback is greatly appreciated and bugs will be fixed relatively quickly (depending on the complexity).
