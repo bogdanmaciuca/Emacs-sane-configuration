@@ -18,15 +18,36 @@
 
 ;; Skip startup screen
 (setq inhibit-startup-screen t)
-;; Forces the messages to 0, and kills the *Messages* buffer - thus disabling it on startup.
-(setq-default message-log-max nil)
-(when (get-buffer "*Messages*") (kill-buffer "*Messages*"))
-;; Disabled *Completions*
+;; Close *Completions* automatically
 (add-hook 'minibuffer-exit-hook 
       '(lambda ()
          (let ((buffer "*Completions*"))
            (and (get-buffer buffer)
             (kill-buffer buffer)))))
+
+;; Recent files
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 20)
+(global-unset-key (kbd "C-S-o"))
+(global-set-key (kbd "C-S-o") 'recentf-open-files)
+
+;; Recent directories
+;; Stolen from https://stackoverflow.com/questions/23328037/in-emacs-how-to-maintain-a-list-of-recent-directories
+(defun dired-recent ()
+  "Open Dired in new buffer, showing the recently used directories."
+  (interactive)
+  (let ((dirs  (delete-dups
+                (mapcar (lambda (f/d)
+                          (if (file-directory-p f/d)
+                              f/d
+                            (file-name-directory f/d)))
+                        recentf-list))))
+    (dired (cons (generate-new-buffer-name "Recent directories") dirs))))
+(global-unset-key (kbd "C-S-k C-S-o"))
+(global-set-key (kbd "C-S-k C-S-o") 'dired-recent)
+;; Open the recent directories dialogue on startup
+(add-hook 'after-init-hook 'dired-recent)
 
 ;; Disable line wrapping in programming modes
 (add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))
