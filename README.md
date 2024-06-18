@@ -23,7 +23,7 @@ An Emacs configuration for the casual editor user.
 - `` C-` ``: open shell
 - `M-S <down>` and `M-S-<up>`: multiple cursors like Visual Studio/VS Code
 - `C-S-o`: opens list of recent files
-- -C-S-k C-S-o`: opens list of recent directories
+- `C-S-k C-S-o`: opens list of recent directories
 
 ## Setup
 With a working Emacs installation, all you need to do to use this configuration is to download the [.emacs](https://github.com/bogdanmaciuca/Emacs-sane-configuration/blob/main/.emacs) file in the Emacs home directory and download the [redo+.el](https://www.emacswiki.org/emacs/download/redo%2b.el) file into the scripts folder (Emacs/emacs-29.1/share/emacs/site-lisp) for Emacs 29.1.
