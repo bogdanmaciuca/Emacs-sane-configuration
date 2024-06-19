@@ -58,6 +58,14 @@
 	    (electric-pair-local-mode 1)
 	    (setq electric-pair-preserve-balance nil)))
 
+;; Highlighting the current line
+(global-hl-line-mode 1)
+
+;; Default tab width (2)
+(setq-default tab-width 2)
+;; Only use spaces
+(setq indent-tabs-mode nil)
+
 ;; Scrolling with mouse
 (global-unset-key (kbd "<wheel-up>"))
 (global-set-key (kbd "<wheel-up>") 'scroll-down-line)
@@ -127,6 +135,10 @@
 (global-set-key (kbd "C-y") 'redo)
 (setq redo+-persistent-undo nil)
 
+;; Select all
+(global-unset-key (kbd "C-a"))
+(global-set-key (kbd "C-a") 'mark-whole-buffer)
+
 ;; Search
 (global-unset-key (kbd "C-f"))
 (global-set-key (kbd "C-f") 'isearch-forward)
@@ -176,6 +188,20 @@
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-unset-key (kbd "C-x <down>"))
 (global-set-key (kbd "C-x <down>") 'windmove-down)
+;; Removing C-x C-<arrowkey> because it can get in the way
+(global-unset-key (kbd "C-x <left>"))
+(global-unset-key (kbd "C-x <right>"))
+(global-unset-key (kbd "C-x <up>"))
+(global-unset-key (kbd "C-x <down>"))
+;; Disable ESC-ESC-ESC from deleting windows
+;; Taken from https://stackoverflow.com/questions/557282/in-emacs-whats-the-best-way-for-keyboard-escape-quit-not-destroy-other-windows
+(defadvice keyboard-escape-quit (around my-keyboard-escape-quit activate)
+  (let (orig-one-window-p)
+    (fset 'orig-one-window-p (symbol-function 'one-window-p))
+    (fset 'one-window-p (lambda (&optional nomini all-frames) t))
+    (unwind-protect
+        ad-do-it
+      (fset 'one-window-p (symbol-function 'orig-one-window-p)))))
 
 ;; Shell
 (global-unset-key (kbd "C-`"))
@@ -196,21 +222,23 @@
 (add-hook 'multiple-cursors-mode-hook 'my-mc-start-hook)
 ;; Exit hook to set line number to nil
 (defun my-mc-exit-hook ()
-  (setq my-mc-current-line nil)
-  (setq mc-is-enabled nil))
+  (setq my-mc-current-line nil) 
+  (setq mc-is-enabled nil))     
 (add-hook 'multiple-cursors-mode-disabled-hook 'my-mc-exit-hook)
 ;; Custom mark-next and mark-prev functions
-(defun my-mark-next ()
-  (mc/mark-next-like-this 1)
+(defun my-mark-next ()          
+  (mc/mark-next-like-this 1)  ; keeps the same column
+  (mc/vertical-align-with-space)
   (setq my-mc-current-line (+ my-mc-current-line 1)))
-(defun my-mark-prev ()
-  (mc/mark-previous-like-this 1)
+(defun my-mark-prev ()          
+  (mc/mark-previous-like-this 1) ; keeps the same column
+  (mc/vertical-align-with-space)
   (setq my-mc-current-line (- my-mc-current-line 1)))
 ;; Custom unmark-next and unmark-prev functions
-(defun my-unmark-next ()
-  (mc/unmark-next-like-this)
+(defun my-unmark-next ()        
+  (mc/unmark-next-like-this)    
   (setq my-mc-current-line (- my-mc-current-line 1)))
-(defun my-unmark-prev ()
+(defun my-unmark-prev ()        
   (mc/unmark-previous-like-this)
   (setq my-mc-current-line (+ my-mc-current-line 1)))
 ;; Custom <up> and <down> functions
@@ -246,8 +274,16 @@
 ;; Font
 (set-frame-font "Consolas 16" nil t)
 
+;; Auto-reloading files changed on disk
+(global-auto-revert-mode t)
+(setq auto-revert-use-notify nil)
+   
 ;; C/C++
-(setq c-default-style "gnu")
+(setq c-default-style "linux")
+(c-set-offset 'arglist-intro '+)        ; Indent the first line of the argument list
+(c-set-offset 'arglist-cont-nonempty 0) ; Indent subsequent lines of arguments
+(c-set-offset 'arglist-close 0)           ; Align closing brace with function name
+(setq c-basic-offset 2)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
