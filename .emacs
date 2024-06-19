@@ -246,6 +246,10 @@
 ;; Font
 (set-frame-font "Consolas 16" nil t)
 
+;; Auto-reloading files changed on disk
+(global-auto-revert-mode t)
+(setq auto-revert-use-notify nil)
+
 ;; C/C++
 (setq c-default-style "gnu")
 
