@@ -251,7 +251,10 @@
 (setq auto-revert-use-notify nil)
 
 ;; C/C++
-(setq c-default-style "gnu")
+(setq c-default-style "linux")
+(c-set-offset 'arglist-intro '+)        ; Indent the first line of the argument list
+(c-set-offset 'arglist-cont-nonempty 0) ; Indent subsequent lines of arguments
+(c-set-offset 'arglist-close 0)           ; Align closing brace with function name
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
